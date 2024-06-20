@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redirecting...</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            var targetUrl = new URLSearchParams(window.location.search).get('target');
+
+            if (!targetUrl) {
+                targetUrl = "https://default-url.com"; // Fallback URL if no target parameter is provided
+            }
+
+            // Check if the user is using the TikTok browser
+            if (userAgent.indexOf("TikTok") > -1) {
+                // If TikTok browser, redirect using methods for both Android and iOS
+                if (/iPhone|iPad|iPod/i.test(userAgent)) {
+                    // iOS redirect
+                    var a = document.createElement('a');
+                    a.href = targetUrl;
+                    a.rel = 'noreferrer noopener';
+                    a.click();
+                } else {
+                    // Android redirect
+                    window.location.href = "intent://" + targetUrl + "#Intent;scheme=https;package=com.android.chrome;end";
+                }
+            } else {
+                // Otherwise, redirect to the original URL
+                window.location.href = targetUrl;
+            }
+        });
+    </script>
+</head>
+<body>
+    <p>Redirecting, please wait...</p>
+</body>
+</html>
